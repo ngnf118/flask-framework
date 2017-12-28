@@ -13,8 +13,8 @@ def index():
     return render_template('index.html')
 
 
-quandl.ApiConfig.api_key = "bbcN1HBxBVzay8-qxx7B"
-
+# quandl.ApiConfig.api_key = "bbcN1HBxBVzay8-qxx7B"
+# data = quandl.get(" WIKI/PRICES")
 
 # @app.route('/graph')
 # def graph():
