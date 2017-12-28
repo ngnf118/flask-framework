@@ -8,16 +8,15 @@ import simplejson
 
 quandl.ApiConfig.api_key = "bbcN1HBxBVzay8-qxx7B"
 
-
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/graph')
-def graph():
-    return render_template('graph.html')
+# @app.route('/graph')
+# def graph():
+#     return render_template('graph.html')
 
 if __name__ == '__main__':
     app.run(port=33507)
