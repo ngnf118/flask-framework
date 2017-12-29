@@ -3,7 +3,6 @@ import numpy as np
 from bokeh.layouts import gridplot
 from bokeh.plotting import figure, show, output_file
 
-
 def read_data(stock):
     quandl.ApiConfig.api_key = "bbcN1HBxBVzay8-qxx7B"
     data = quandl.get("WIKI/"+stock, start_date="2017-11-01", end_date="2017-11-30")

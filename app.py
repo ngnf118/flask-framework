@@ -3,8 +3,11 @@ import quandl
 import numpy as np
 from bokeh.layouts import gridplot
 from bokeh.plotting import figure, show, output_file
+from bokeh.embed import components
+
 
 app = Flask(__name__)
+
 
 def read_data(stock):
     quandl.ApiConfig.api_key = "bbcN1HBxBVzay8-qxx7B"
@@ -25,8 +28,10 @@ def plot_it_out(stock):
     p1.line(datetime(my_df.index), my_df['Close'], color='#000000', legend=stock)
     p1.legend.location = "top_left"
 
-    output_file("templates/stockplot.html", title="Graph of " + stock)
-    show(gridplot([[p1]], plot_width=400, plot_height=400))
+    output_file("templates/'stockplot.html", title="Graph of " + stock)
+    script, div = components(p1)
+    return render_template('stockplot.html', script=script, div=div)
+
 
 @app.route('/')
 def index():
