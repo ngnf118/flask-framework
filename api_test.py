@@ -1,10 +1,8 @@
-from flask import Flask, render_template, request, redirect
 import quandl
 import numpy as np
 from bokeh.layouts import gridplot
 from bokeh.plotting import figure, show, output_file
 
-app = Flask(__name__)
 
 def read_data(stock):
     quandl.ApiConfig.api_key = "bbcN1HBxBVzay8-qxx7B"
@@ -28,18 +26,6 @@ def plot_it_out(stock):
     output_file("templates/stockplot.html", title="Graph of " + stock)
     show(gridplot([[p1]], plot_width=400, plot_height=400))
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/', methods=['POST'])
-def read_in():
-    text = request.form['ticker']
-    processed_text = text.upper()
-    plot_it_out(processed_text)
-
-if __name__ == '__main__':
-    app.run(port=33507)
-
-
-
+plot_it_out('GOOG')
+plot_it_out('AMZN')
+plot_it_out('FB')
