@@ -4,6 +4,8 @@ import numpy as np
 from bokeh.layouts import gridplot
 from bokeh.plotting import figure, show, output_file
 from bokeh.embed import components
+from bokeh.resources import INLINE
+import bokeh.io
 
 app = Flask(__name__)
 
@@ -16,7 +18,15 @@ def read_data(stock):
 def datetime(x):
     return np.array(x, dtype=np.datetime64)
 
-def plot_it_out(stock):
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/', methods=['GET', 'POST'])
+def read_in_and_graph():
+    text = request.form['ticker']
+    processed_text = text.upper()
+    stock = processed_text
     p1 = figure(x_axis_type="datetime", title="Stock Closing Prices")
     p1.grid.grid_line_alpha = 0.3
     p1.xaxis.axis_label = 'Date'
@@ -27,19 +37,9 @@ def plot_it_out(stock):
     p1.legend.location = "top_left"
 
     script, div = components(p1)
-    return render_template('stockplot.html', script=script, div=div)
-
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/', methods=['POST'])
-def read_in():
-    text = request.form['ticker']
-    processed_text = text.upper()
-    plot_it_out(processed_text)
-    print(request.form['features'])
+    print(script)
+    print(div)
+    return render_template('graph.html', script=script, div=div)
 
 if __name__ == '__main__':
     app.run(port=33507)

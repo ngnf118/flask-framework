@@ -24,7 +24,7 @@ def plot_it_out(stock):
     p1.line(datetime(my_df.index), my_df['Close'], color='#000000', legend=stock)
     p1.legend.location = "top_left"
 
-    output_file("templates/stockplot.html", title="Graph of " + stock)
+    # output_file("templates/stockplot.html", title="Graph of " + stock)
     show(gridplot([[p1]], plot_width=400, plot_height=400))
     return
     # script, div = components(p1)
