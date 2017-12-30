@@ -1,8 +1,17 @@
-<form method="POST">
-    <input name="ticker"><br>
-    <input type="checkbox" name='features' value='open' />Open<br>
-    <input type="checkbox" name='features' value='high' />High<br>
-    <input type="checkbox" name='features' value='low' />Low<br>
-    <input type="checkbox" name='features' value='close' />Close<br>
-    <input type="submit"><br>
-</form>
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Stock Graphing Tool</h1>
+    <p>Please input the stock's ticker name and select the features that you would like to visualize.</p>
+
+    <form method="POST">
+        <input type="text" name="ticker"><br><br>
+        <input type="checkbox" name='features' value='open' />Open<br>
+        <input type="checkbox" name='features' value='high' />High<br>
+        <input type="checkbox" name='features' value='low' />Low<br>
+        <input type="checkbox" name='features' value='close' />Close<br><br>
+        <input type="submit" value='Submit' /><br>
+    </form>
+
+</body>
+</html>
