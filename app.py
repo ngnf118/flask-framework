@@ -4,8 +4,8 @@ import numpy as np
 from bokeh.layouts import gridplot
 from bokeh.plotting import figure, show, output_file
 from bokeh.embed import components
-from bokeh.resources import INLINE
-import bokeh.io
+# from bokeh.resources import INLINE
+# import bokeh.io
 
 app = Flask(__name__)
 
