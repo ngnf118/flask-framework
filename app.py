@@ -22,7 +22,7 @@ def datetime(x):
 def index():
     return render_template('index.html')
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['POST'])
 def read_in_and_graph():
     text = request.form['ticker']
     processed_text = text.upper()
