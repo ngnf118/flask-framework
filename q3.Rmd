@@ -1,0 +1,85 @@
+---
+title: "q3"
+author: "Ngai fung Ng"
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+library(ggmap)
+library(ggalt)    
+library(ggthemes)
+library(dplyr)
+```
+
+```{r}
+df <- read.csv("database.csv")
+df$month <- substr(df$Date, start = 1, stop = 2)
+df$day <- substr(df$Date, start = 4, stop = 5)
+df$year <- substr(df$Date, start = 7, stop = 10)
+df$hour <- substr(df$Time, start = 1, stop = 2)
+df$minute <- substr(df$Time, start = 4, stop = 5)
+df$second <- substr(df$Time, start = 7, stop = 8)
+ind <- df$Date=="1975-02-23T02:58:41.000Z"
+df$day[ind] <- "23"
+df$month[ind] <- "02"
+df$year[ind] <- "1975"
+df$hour[ind] <- "02"
+df$minute[ind] <- "58"
+df$second[ind] <- "41"
+ind <- df$Date=="1985-04-28T02:53:41.530Z"
+df$day[ind] <- "28"
+df$month[ind] <- "04"
+df$year[ind] <- "1985"
+df$hour[ind] <- "02"
+df$minute[ind] <- "53"
+df$second[ind] <- "41"
+ind <- df$Date=="2011-03-13T02:23:34.520Z"
+df$day[ind] <- "13"
+df$month[ind] <- "03"
+df$year[ind] <- "2011"
+df$hour[ind] <- "02"
+df$minute[ind] <- "23"
+df$second[ind] <- "34"
+```
+
+```{r}
+plt <- ggplot(df, aes(x = day)) + geom_bar(width = 0.5, colour="black", fill="#000099") + xlab("day") + ylab("occurrence") + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + ggtitle("Earthquake occurrence by day (1965-2016)")
+ggsave('q3_plots/by_day.png')
+
+plt <- ggplot(df, aes(x = df$month)) + geom_bar(width = 0.25, colour="black", fill="#000099") + xlab("month") + ylab("occurrence") + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + ggtitle("Earthquake occurrence by month (1965-2016)")
+ggsave('q3_plots/by_month.png')
+
+by_year <- data.frame(table(df$year))
+names(by_year) <- c("year", "occurrence")
+plt <- ggplot(by_year, aes(x = year, y = occurrence)) + geom_line(aes(group=1), colour="#000099") + geom_point(size=1, colour="#CC0000") + xlab("year") + ylab("occurrence") + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + ggtitle("Earthquake occurrence by year (1965-2016)")
+ggsave('q3_plots/by_year.png')
+plt <- ggplot(df, aes(x = df$Date, y = df$Magnitude)) + geom_line() + xlab("Year 1965-2016") + ylab("Magnitude") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + ggtitle("Earthquake Magnitudes from 1965 to 2016")
+ggsave('q3_plots/by_date.png')
+```
+
+```{r}
+mp <- ggplot() + borders("world", colour="gray78", fill="gray78")
+mp_heat <- mp + geom_density2d(data = df, aes(x=df$Longitude, y=df$Latitude, color=Magnitude), size = 0.00001) + stat_density2d(data = df, aes(x=df$Longitude, y=df$Latitude, fill = ..level.., alpha = ..level..), size = 0.00001, bins = 16, geom = "polygon") + scale_fill_gradient(low = "yellow3", high = "red3") + scale_alpha(range = c(0, 1), guide = FALSE) + xlab("Longtitude") + ylab("Latitude") + ggtitle("Earthquake Positions from 1965 to 2016 (Heat Map by Occurrence)") + coord_fixed(ratio = 1.3)
+ggsave('q3_plots/map_heat.png')
+
+mp <- ggplot(data = df) + borders("world", colour="gray78", fill="gray78")
+mp_dot <- mp + geom_point(aes(x=Longitude, y=Latitude, color=Magnitude), size=0.00001) + xlab("Longtitude") + ylab("Latitude") + ggtitle("Earthquake Positions from 1965 to 2016") + scale_colour_gradient(low = "skyblue", high = "tomato4") + coord_fixed(ratio = 1.3)
+ggsave('q3_plots/map_location.png')
+```
+
+```{r}
+write.csv(by_year, file = 'occurence_by_year.csv')
+years <- unique(df$year)
+avg_mag <- 1:length(years)
+for (i in years){
+  temp <- df %>% filter(year==i)
+  avg_mag[years==i] <- mean(temp$Magnitude)
+}
+df_temp <- data.frame('year' = years, 'avg_mag' = avg_mag)
+write.csv(df_temp, file = 'avg_mag_by_year.csv')
+
+```
+
+
+
